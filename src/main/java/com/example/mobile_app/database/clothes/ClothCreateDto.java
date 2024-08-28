@@ -8,8 +8,7 @@ import lombok.Value;
 
 @Value
 public class ClothCreateDto {
-    User user;
-    SetCloth setCloth;
+    Long userId;
     String linkPhoto;
     Season season;
     Type type;

@@ -11,6 +11,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+
+    // TODO: 26.08.2024 fix update method
+
     private final UserRepository userRepository;
     private final UserReadMapper userReadMapper;
     private final UserCreateMapper userCreateMapper;
@@ -47,7 +50,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserReadDto updateUser(Long id, UserCreateDto userCreateDto) {
+    public UserReadDto update(Long id, UserCreateDto userCreateDto) {
         return userRepository.findById(id).map(
                 entity -> {
                     entity.setName(userCreateDto.getName());

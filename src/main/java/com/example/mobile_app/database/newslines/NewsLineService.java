@@ -13,12 +13,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class NewsLineService {
+
+
+    // TODO: 26.08.2024 fix method findAll to findAllByOrderByPostDateDesc + add Pageable
+    // TODO: 26.08.2024 add method findAllByOrderByLikeDesc + add Pageable
+
+
     private final NewsLineRepository newsLineRepository;
     private final NewsLineReadMapper newsLineReadMapper;
     private final NewsLineCreateMapper newsLineCreateMapper;
 
 
-    // TODO: 21.08.2024  add Pageable
+
     public List<NewsLineReadDto> findAll(){
         return newsLineRepository.findAll()
                 .stream()
@@ -40,6 +46,17 @@ public class NewsLineService {
                 .map(newsLineReadMapper::map)
                 .orElseThrow();
 
+    }
+
+    @Transactional
+    public boolean deleteById(Long id){
+        return newsLineRepository.findById(id)
+                .map(entity ->{
+                    newsLineRepository.delete(entity);
+                    newsLineRepository.flush();
+                    return true;
+                })
+                .orElse(false);
     }
 
 

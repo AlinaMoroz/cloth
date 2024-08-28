@@ -14,11 +14,32 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CommentService {
 
+
+
+
     private final CommentCreateMapper commentCreateMapper;
     private final CommentRepository commentRepository;
     private final CommentReadMapper commentReadMapper;
-    private final NewsLineRepository newsLineRepository;
-    private final UserService userService;
+    private final CommentUpdateMapper commentUpdateMapper;
+
+
+    public Optional<CommentReadDto> findById(Long id){
+        return commentRepository.findById(id)
+                .map(commentReadMapper::map);
+    }
+
+
+    @Transactional
+    public Optional<CommentReadDto> update(Long id, CommentUpdateDto commentUpdateDto){
+        return commentRepository.findById(id)
+                .map(entity -> {
+                    commentUpdateMapper.map(commentUpdateDto,entity);
+                    commentRepository.save(entity);
+                    return commentReadMapper.map(entity);
+
+                });
+
+    }
 
 
     @Transactional
@@ -32,11 +53,6 @@ public class CommentService {
 
 
     public List<CommentReadDto> findAllByNewsLineId(Long newsLineId) {
-
-//                var userReadDto = Optional.ofNullable(object.getUser())
-//                .map(userReadMapper::map)
-//                .orElse(null);
-
 
         return commentRepository.findAllByNewsLineId(newsLineId)
                 .stream()
@@ -55,7 +71,7 @@ public class CommentService {
                 }).orElse(false);
     }
 
-//    public CommentReadDto update()
+
 
 
 }
