@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +18,7 @@ public class NewsLineService {
 
     // TODO: 26.08.2024 fix method findAll to findAllByOrderByPostDateDesc + add Pageable
     // TODO: 26.08.2024 add method findAllByOrderByLikeDesc + add Pageable
+    // TODO: 29.08.2024 fix method create(NewsLineCreateDto createDto, Set set) 
 
 
     private final NewsLineRepository newsLineRepository;
@@ -39,7 +41,7 @@ public class NewsLineService {
     }
 
     @Transactional
-    public NewsLineReadDto create(NewsLineCreateDto createDto){
+    public NewsLineReadDto create(NewsLineCreateDto createDto, Set set){
         return Optional.of(createDto)
                 .map(newsLineCreateMapper::map)
                 .map(newsLineRepository::save)
