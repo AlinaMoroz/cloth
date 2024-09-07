@@ -1,14 +1,12 @@
 package com.example.mobile_app.database.newslines;
 
-import com.example.mobile_app.database.newslines.*;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,22 +14,21 @@ import java.util.stream.Collectors;
 public class NewsLineService {
 
 
-    // TODO: 26.08.2024 fix method findAll to findAllByOrderByPostDateDesc + add Pageable
-    // TODO: 26.08.2024 add method findAllByOrderByLikeDesc + add Pageable
-    // TODO: 29.08.2024 fix method create(NewsLineCreateDto createDto, Set set) 
-
 
     private final NewsLineRepository newsLineRepository;
     private final NewsLineReadMapper newsLineReadMapper;
     private final NewsLineCreateMapper newsLineCreateMapper;
 
+    public Page<NewsLineReadDto> findAllByOrderByLikeCountDesc(Pageable pageable){
+        return newsLineRepository.findAllByOrderByLikeCountDesc(pageable)
+                .map(newsLineReadMapper::map);
+    }
 
 
-    public List<NewsLineReadDto> findAll(){
-        return newsLineRepository.findAll()
-                .stream()
-                .map(newsLineReadMapper::map)
-                .collect(Collectors.toList());
+
+    public Page<NewsLineReadDto> findAllByOrderByPostDateDesc(Pageable pageable){
+        return newsLineRepository.findAllByOrderByPostDateDesc(pageable)
+                .map(newsLineReadMapper::map);
 
     }
 
@@ -41,7 +38,7 @@ public class NewsLineService {
     }
 
     @Transactional
-    public NewsLineReadDto create(NewsLineCreateDto createDto, Set set){
+    public NewsLineReadDto create(NewsLineCreateDto createDto){
         return Optional.of(createDto)
                 .map(newsLineCreateMapper::map)
                 .map(newsLineRepository::save)

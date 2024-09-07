@@ -1,6 +1,7 @@
 package com.example.mobile_app.database.sets;
 
 import com.example.mobile_app.database.newslines.NewsLine;
+import com.example.mobile_app.database.users.User;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.Value;
@@ -9,7 +10,9 @@ import lombok.Value;
 public class SetCreateDto {
     String description;
 
-    NewsLine newsLine;
+    Long newsLineId;
 
     String name;
+
+    Long userId;
 }

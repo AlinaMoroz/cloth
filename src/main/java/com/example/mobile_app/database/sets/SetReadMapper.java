@@ -10,6 +10,7 @@ public class SetReadMapper implements Mapper<Set, SetReadDto> {
         return new SetReadDto(object.getId(),
                 object.getDescription(),
                 object.getNewsLine(),
-                object.getName());
+                object.getName(),
+                object.getUser());
     }
 }

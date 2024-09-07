@@ -56,4 +56,7 @@ drop table users;
 drop table sets;
 drop table news_lines;
 
+ALTER TABLE sets
+    ADD column user_id BIGINT REFERENCES users(id)
+
 

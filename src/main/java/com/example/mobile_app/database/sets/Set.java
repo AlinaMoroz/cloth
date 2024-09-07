@@ -3,6 +3,7 @@ package com.example.mobile_app.database.sets;
 import com.example.mobile_app.database.general.BaseEntity;
 import com.example.mobile_app.database.newslines.NewsLine;
 import com.example.mobile_app.database.sets_clothes.SetCloth;
+import com.example.mobile_app.database.users.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,9 @@ public class Set implements BaseEntity<Long> {
     private NewsLine newsLine;
 
     private String name;
+
+    @ManyToOne
+    private User user;
 
     @Builder.Default
     @OneToMany(mappedBy = "set")

@@ -14,10 +14,6 @@ import java.util.Optional;
 public class ClothService {
 
 
-    // TODO: 26.08.2024 add method findById
-    // TODO: 26.08.2024 add method delete 
-    // TODO: 26.08.2024 add method findAllClothBySetId 
-    // TODO: 29.08.2024 add pageable findAllByUserIdAndType
 
     private final ClothRepository clothRepository;
     private final ClothReadMapper clothReadMapper;

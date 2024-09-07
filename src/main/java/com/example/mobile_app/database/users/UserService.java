@@ -12,11 +12,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserService {
 
-    // TODO: 26.08.2024 fix update method
-
     private final UserRepository userRepository;
     private final UserReadMapper userReadMapper;
     private final UserCreateMapper userCreateMapper;
+    private final UserUpdateMapper userUpdateMapper;
 
     public Optional<UserReadDto> findById(Long id) {
         return userRepository.findById(id)
@@ -29,7 +28,6 @@ public class UserService {
         return userRepository.findById(id)
                 .map(entity -> {
                     userRepository.delete(entity);
-                    userRepository.flush();
                     return true;
                 }).orElse(false);
 
@@ -50,14 +48,11 @@ public class UserService {
     }
 
     @Transactional
-    public UserReadDto update(Long id, UserCreateDto userCreateDto) {
+    public UserReadDto update(Long id, UserUpdateDto userUpdateDto) {
         return userRepository.findById(id).map(
                 entity -> {
-                    entity.setName(userCreateDto.getName());
-                    entity.setAvatar(userCreateDto.getAvatar());
-                    entity.setEmail(userCreateDto.getEmail());
-                    entity.setPassword(userCreateDto.getPassword());
-                    var entity1 = userRepository.save(entity);
+                    var user = userUpdateMapper.map(userUpdateDto, entity);
+                    var entity1 = userRepository.save(user);
                     userRepository.flush();
                     return userReadMapper.map(entity1);
                 }
