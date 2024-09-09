@@ -6,6 +6,7 @@ import com.example.mobile_app.database.comments.CommentService;
 import com.example.mobile_app.database.comments.CommentUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,7 +26,7 @@ public class CommentRestController {
     }
 
     @PutMapping("/{id}")
-    public CommentReadDto update(@PathVariable Long id, @RequestBody CommentUpdateDto commentUpdateDto){
+    public CommentReadDto update(@PathVariable Long id, @RequestBody @Validated CommentUpdateDto commentUpdateDto){
         return commentService.update(id, commentUpdateDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
@@ -33,14 +34,14 @@ public class CommentRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentReadDto create(@RequestBody CommentCreateDto commentCreateDto){
+    public CommentReadDto create(@RequestBody @Validated CommentCreateDto commentCreateDto){
         return commentService.create(commentCreateDto);
 
     }
 
-    @GetMapping("/by-news-line/{newsLineId}")
-    public List<CommentReadDto> findAllByNewsLineId(@PathVariable Long newsLineId){
-        return commentService.findAllByNewsLineId(newsLineId);
+    @GetMapping("/newsLines/{id}")
+    public List<CommentReadDto> findAllByNewsLineId(@PathVariable Long id){
+        return commentService.findAllByNewsLineId(id);
     }
 
     @DeleteMapping("/{id}")

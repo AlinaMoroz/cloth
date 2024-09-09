@@ -14,17 +14,17 @@ import java.util.Optional;
 public class ClothService {
 
 
-
     private final ClothRepository clothRepository;
     private final ClothReadMapper clothReadMapper;
     private final ClothCreateMapper clothCreateMapper;
     private final SetClothRepository setClothRepository;
 
-    public Optional<ClothReadDto>findById(Long id){
+    public Optional<ClothReadDto> findById(Long id) {
         return clothRepository.findById(id)
                 .map(clothReadMapper::map);
     }
-    public List<ClothReadDto>findAllClothBySetId(Long setId){
+
+    public List<ClothReadDto> findAllClothBySetId(Long setId) {
 
         return setClothRepository.findAllClothBySetId(setId)
                 .stream()
@@ -33,24 +33,25 @@ public class ClothService {
     }
 
     @Transactional
-    public Optional<ClothReadDto> create(ClothCreateDto createDto){
+    public ClothReadDto create(ClothCreateDto createDto) {
         return Optional.of(createDto)
                 .map(clothCreateMapper::map)
                 .map(clothRepository::save)
-                .map(clothReadMapper::map);
+                .map(clothReadMapper::map)
+                .orElseThrow();
 
     }
 
-    public List<ClothReadDto>findAllByUserIdAndType(Long userId, Type type){
+    public List<ClothReadDto> findAllByUserIdAndType(Long userId, Type type) {
         return clothRepository.findAllByUserIdAndType(userId, type)
                 .stream().map(clothReadMapper::map).toList();
 
     }
 
     @Transactional
-    public boolean deleteById(Long id){
+    public boolean deleteById(Long id) {
         return clothRepository.findById(id)
-                .map(entity ->{
+                .map(entity -> {
                     clothRepository.delete(entity);
                     clothRepository.flush();
                     return true;

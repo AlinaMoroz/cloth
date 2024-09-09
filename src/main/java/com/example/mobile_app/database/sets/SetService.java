@@ -26,7 +26,7 @@ public class SetService {
 
 
 
-    Page<SetReadDto> findByNewsLineId(Long newsLineId, Pageable pageable) {
+    public Page<SetReadDto> findByNewsLineId(Long newsLineId, Pageable pageable) {
         return setRepository.findByNewsLineId(newsLineId, pageable)
                 .map(setReadMapper::map);
     }
@@ -89,12 +89,12 @@ public class SetService {
     }
 
     @Transactional
-    public Optional<SetReadDto> create(SetCreateDto setCreateDto) {
+    public SetReadDto create(SetCreateDto setCreateDto) {
         return Optional.ofNullable(setCreateDto)
                 .map(setCreateMapper::map)
                 .map(setRepository::save)
-                .map(setReadMapper::map);
-
+                .map(setReadMapper::map)
+                .orElseThrow();
     }
 
 

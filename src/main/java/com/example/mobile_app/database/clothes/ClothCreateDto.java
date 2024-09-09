@@ -1,15 +1,22 @@
 package com.example.mobile_app.database.clothes;
 
-import com.example.mobile_app.database.clothes.Season;
-import com.example.mobile_app.database.sets_clothes.SetCloth;
-import com.example.mobile_app.database.clothes.Type;
-import com.example.mobile_app.database.users.User;
+
+import jakarta.validation.constraints.*;
 import lombok.Value;
 
 @Value
 public class ClothCreateDto {
+    @NotNull
+    @Positive
     Long userId;
+
+    @NotBlank
+    @Size(max = 255)
     String linkPhoto;
+
+    @NotNull
     Season season;
+
+    @NotNull
     Type type;
 }

@@ -5,6 +5,7 @@ import com.example.mobile_app.database.users.UserReadDto;
 import com.example.mobile_app.database.users.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -30,7 +31,7 @@ public class UserRestController {
         }
     }
 
-    @GetMapping("/by-email")
+    @GetMapping()
     public UserReadDto findByEmail(@RequestParam String email){
         return userService.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -38,7 +39,7 @@ public class UserRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReadDto create(@RequestBody UserCreateDto userCreateDto){
+    public UserReadDto create(@Validated @RequestBody UserCreateDto userCreateDto){
         return userService.create(userCreateDto);
 
     }

@@ -5,8 +5,10 @@ import com.example.mobile_app.database.newslines.NewsLineReadDto;
 import com.example.mobile_app.database.newslines.NewsLineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,16 +18,19 @@ import org.springframework.web.server.ResponseStatusException;
 public class NewsLineRestController {
 
     private final NewsLineService newsLineService;
+    private static final Integer pageSize = 5;
 
-    @GetMapping("/like-count")
-    public Page<NewsLineReadDto> findAllByOrderedByLikeCount(Pageable pageable){
-        return newsLineService.findAllByOrderByLikeCountDesc(pageable);
+
+
+    @GetMapping("/sortLikeCount/{page}")
+    public Page<NewsLineReadDto> findAllByOrderedByLikeCount(@PathVariable Integer page){
+        return newsLineService.findAllByOrderByLikeCountDesc(PageRequest.of(page, pageSize));
 
     }
 
-    @GetMapping("/post-date")
-    public Page<NewsLineReadDto> findAllByOrderedByPostDateDesc(Pageable pageable){
-        return newsLineService.findAllByOrderByPostDateDesc(pageable);
+    @GetMapping("/sortPostDate/{page}")
+    public Page<NewsLineReadDto> findAllByOrderedByPostDateDesc(@PathVariable Integer page){
+        return newsLineService.findAllByOrderByPostDateDesc(PageRequest.of(page, pageSize));
 
     }
 
@@ -37,7 +42,7 @@ public class NewsLineRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public  NewsLineReadDto create(NewsLineCreateDto newsLineCreateDto){
+    public  NewsLineReadDto create(@RequestBody @Validated NewsLineCreateDto newsLineCreateDto){
         return newsLineService.create(newsLineCreateDto);
 
     }
